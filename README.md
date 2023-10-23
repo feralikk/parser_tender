@@ -1,2 +1,2 @@
-# parser_razoom
+# parser_tender
 Парсер сайтов с тендерами
