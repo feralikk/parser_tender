@@ -1,0 +1,59 @@
+import logging
+import importlib
+from urllib.parse import urlparse
+
+
+logging.basicConfig(filename="parser.log", level=logging.ERROR,
+                    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+logger = logging.getLogger()
+
+urls = [
+    'https://centerexport30.ru/konkurs/',
+    'https://export31.ru/zakupki/',
+    'http://www.32export.ru/izveschenija-o-provedenii-konkursnogo-otbora/',
+    'https://export34.ru/contests/performers/',
+    'https://export42.ru/dlya-podryadchikov/',
+    'https://exportkirov.ru/about/zakupochnaya-deyatelnost/',
+    'https://export.mbpenza.ru/konkursnaya-dokumentaciya',
+    'https://export71.ru/tender/',
+    'https://ica74.com/zakupki/',
+    
+    'https://mb31.ru/mkk-bofpmsp/zakupki-mkk-bofpmsp/',
+    'https://мойбизнес-33.рф/news/?set_filter=Y&arNewsFilter_pf%5BTAGS%5D%5B%5D=5',
+    'https://mspvolga.ru/zakupki/',
+    'https://www.mb35.ru/zakupki/',
+    'https://мойбизнес75.рф/info/konkursy/',
+    'https://mb38.ru/dokumenty/konkursy-otbory.php?PAGEN_1=2&arrFilter_2612_MIN=&arrFilter_2612_MAX=&arrFilter_2615_MIN=&arrFilter_2615_MAX=&arrFilter_2613=3039629482&set_filter=%D0%9F%D0%BE%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C',
+    'https://мойбизнес41.рф/documents/zakupochnaya-deyatelnost/?zakupochnaya-deyatelnost=',
+    'https://мойбизнес-43.рф/contests',
+    'https://мойбизнес-24.рф/tenders/',
+    'http://ncpp.ru/competitions/',
+    'https://мойбизнес56.рф/support/po-categoriyam/tsentr-podderzhki-predprinimatelstva/zakupki/',
+    'https://mbpenza.ru/zakupki',
+    'https://мойбизнес01.рф/documents/dokumenty-dlya-partnerov',
+    'https://msp03.ru/konkursy/',
+    'https://kr-rk.ru/contests/ispolnitelyam/',
+    'https://мойбизнес19.рф/development-fund/otbor-ispolnitlej',
+    'https://saratov-bis.ru/cpp/zakupki/zakupki-2023/',
+    'https://mybusiness69.ru/partner/',
+    'https://mb.tomsk.ru/moy-biznes/sotrudnichestvo/',
+    'https://мойбизнестула.рф/request/',
+
+    # 'https://msp29.ru/ru/press/calendar/',
+    # 'https://мойбизнес22.рф/news/'
+    # ...
+]
+
+if __name__ == "__main__":
+    for url in urls:
+        try:
+            domain = urlparse(url).hostname
+            filename = domain.split('.')[0]
+            if filename == 'www':
+                filename = (domain.split('.')[1])
+            module_name = f'parsers.{filename}'
+            module  = importlib.import_module(module_name)
+            print (module_name)
+            module.parse(url)
+        except Exception as e:
+            print(f"Error occurred for {url}: {e}")
